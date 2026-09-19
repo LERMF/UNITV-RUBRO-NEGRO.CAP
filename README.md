@@ -1,55 +1,79 @@
-# UNITV-RUBRO-NEGRO.CAP
-Custom minimal launcher for Android TV / BTV TV Box with optimizations and tracker removal.
+# UNITV Minimal Android TV Launcher
 
-## Features
-- 🎯 Minimal and lightweight Android TV launcher
-- 🎮 Full D-Pad navigation support for TV remotes
-- 📱 Leanback-compatible for Android TV
-- 🚀 Fast app launching with RecyclerView-based UI
-- 🎨 Red and black theme optimized for TV screens
-- 📦 Small APK size with ProGuard optimization
+> **Ultra-minimalist, tracker-free Leanback launcher for Android TV and TV Box hardware.**
 
-## Requirements
-- Android 5.0 (API 21) or higher
-- Android TV or TV Box with Leanback support
-- Java 11+ for building
+```
+                     ┌───────────────────────────────────┐
+                     │       D-Pad Remote Control        │
+                     └─────────────────┬─────────────────┘
+                                       │
+                                       ▼
+                     ┌───────────────────────────────────┐
+                     │    Focus-Aware RecyclerView Grid  │
+                     │    (5-Column Leanback Layout)     │
+                     └─────────────────┬─────────────────┘
+                                       │
+                    ┌──────────────────┴──────────────────┐
+                    ▼                                     ▼
+         ┌─────────────────────┐               ┌─────────────────────┐
+         │  Zero-Tracker Engine│               │   ProGuard Stripped │
+         │  No Analytics/Ads   │               │    Sub-2MB Release  │
+         └─────────────────────┘               └─────────────────────┘
+```
 
-## Building
+Commercial Android TV launchers are filled with background trackers, intrusive advertising banners, and memory leaks that cripple low-end set-top boxes. A launcher should execute a single responsibility: indexing and launching installed applications with zero perceptible input latency.
 
-### Using the build script
+`UNITV-RUBRO-NEGRO.CAP` is a clean, sovereign Android TV launcher built in idiomatic Kotlin. It strips all telemetry, enforces strict D-Pad navigation semantics, and optimizes rendering for 10-foot television user interfaces.
+
+---
+
+## ✦ Core Architectural Features
+
+- **Strict D-Pad Semantics**: Full hardware remote compatibility (`DPAD_UP`, `DPAD_DOWN`, `DPAD_LEFT`, `DPAD_RIGHT`, `DPAD_CENTER`, `ENTER`).
+- **Leanback Compliance**: Native `AndroidX Leanback` integration guaranteeing Android TV compatibility from Android 5.0 (API 21) through Android 14 (API 34).
+- **Tracker Elimination**: Zero third-party analytics SDKs, zero advertising calls, zero persistent background services.
+- **ProGuard Optimization**: Minified binary footprint ($<2\text{ MB}$) ensuring instantaneous cold-start on resource-constrained TV boxes.
+- **Adaptive Focus States**: High-contrast visual focus styling with elevation depth for clear spatial orientation.
+
+---
+
+## ✦ Technical Specifications
+
+| Parameter | Specification | Target Rationale |
+|---|---|---|
+| **Language** | Kotlin 1.9.0 | Idiomatic type safety and coroutines |
+| **Minimum SDK** | API 21 (Android 5.0) | Broad legacy hardware support |
+| **Target SDK** | API 34 (Android 14) | Modern platform compliance |
+| **UI Framework** | RecyclerView + GridLayoutManager | Low-memory virtualization |
+| **Theme** | Leanback Dark / High Contrast Red | Glare-free 10-foot living room UX |
+| **License** | Apache-2.0 | Permissive open-source standard |
+
+---
+
+## ✦ Build & Deployment Instructions
+
+### Build Release APK
 ```bash
+# Ensure Android SDK is installed:
+./gradlew assembleRelease
+
+# Or invoke the automated release builder:
 ./build-release.sh
 ```
 
-### Using Gradle directly
+### Installation via ADB
 ```bash
-# Debug build
-./gradlew assembleDebug
+# Connect to your Android TV device:
+adb connect <DEVICE_IP>:5555
 
-# Release build
-./gradlew assembleRelease
+# Sideload the launcher:
+adb install -r app/build/outputs/apk/release/app-release.apk
+
+# Set as default launcher via device settings:
+# Settings -> Apps -> Default Apps -> Home app -> UNITV Launcher
 ```
 
-The APK will be generated at:
-- Debug: `app/build/outputs/apk/debug/app-debug.apk`
-- Release: `app/build/outputs/apk/release/app-release.apk`
+---
 
-## Installation
-1. Transfer the APK to your Android TV device
-2. Enable "Unknown sources" in Settings
-3. Install the APK using a file manager
-4. Go to Settings > Apps > Default Apps > Home app
-5. Select "UNITV Launcher" as your default launcher
-
-## Development
-The project uses:
-- Kotlin for all source code
-- AndroidX and Leanback libraries
-- RecyclerView with GridLayoutManager for app grid
-- CardView with focus animations for TV navigation
-
-## CI/CD
-The project includes GitHub Actions workflow for automated builds with APK signing.
-
-## License
-Apache License 2.0 - See LICENSE file for details
+## ✦ License
+[Apache License 2.0](LICENSE) © LERMF
